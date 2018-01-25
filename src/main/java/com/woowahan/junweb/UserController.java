@@ -25,6 +25,7 @@ public class UserController {
     @PostMapping("")
     public String createUser(User user){
         System.out.println(user.toString());
+
         userRepository.save(user);
         return "redirect:/";
     }
