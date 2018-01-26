@@ -1,5 +1,7 @@
-package com.woowahan.junweb;
+package com.woowahan.junweb.Contoller;
 
+import com.woowahan.junweb.Model.User;
+import com.woowahan.junweb.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,10 +26,17 @@ public class UserController {
     }
 
     @GetMapping("")
-    public String show(Model model) {
+    public String showUsersList(Model model) {
         List<User> users = (List<User>) userRepository.findAll();
         model.addAttribute("users", users);
         return "user/list";
+    }
+
+    @GetMapping("/form")
+    public String showForm(Model model) {
+        List<User> users = (List<User>) userRepository.findAll();
+        model.addAttribute("users", users);
+        return "user/form";
     }
 
     @PostMapping("")

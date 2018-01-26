@@ -1,4 +1,4 @@
-package com.woowahan.junweb;
+package com.woowahan.junweb.Model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

@@ -1,4 +1,4 @@
-package com.woowahan.junweb;
+package com.woowahan.junweb.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -12,6 +12,7 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
 
         registry.addViewController("/users/form").setViewName("user/form");
+        registry.addViewController("/").setViewName("index/index");
         registry.addViewController("/users/login").setViewName("user/login");
         registry.addViewController("/questions/form").setViewName("qna/form");
     }
