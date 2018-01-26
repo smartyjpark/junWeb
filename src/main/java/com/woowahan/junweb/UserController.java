@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/users")
 public class UserController {
@@ -18,12 +20,13 @@ public class UserController {
     public String show(@PathVariable long id, Model model) {
         User user = userRepository.findOne(id);
         model.addAttribute("user", user);
-        return "user/list";
+        return "user/profile";
     }
 
     @GetMapping("")
-    public String show() {
-
+    public String show(Model model) {
+        List<User> users = (List<User>) userRepository.findAll();
+        model.addAttribute("users", users);
         return "user/list";
     }
 
