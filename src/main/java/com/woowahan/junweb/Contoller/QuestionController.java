@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/qna")
 public class QuestionController {
@@ -26,6 +28,13 @@ public class QuestionController {
         System.out.println(question);
         model.addAttribute("question", question);
         return "qna/show";
+    }
+
+    @GetMapping("")
+    public String showQuestions(Model model){
+        List<Question> questions = (List<Question>) questionRepository.findAll();
+        model.addAttribute("questions", questions);
+        return "qna/list";
     }
 
     @PostMapping("")
