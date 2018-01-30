@@ -4,7 +4,6 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Entity
@@ -25,6 +24,7 @@ public class Answer {
     @CreatedDate
     private Date date;
     private boolean deleted;
+    private boolean myAnswer;
 
     public Answer() {
 
@@ -35,7 +35,16 @@ public class Answer {
         this.writer = writer;
         this.contents = contents;
         this.deleted = false;
+        this.myAnswer = false;
 
+    }
+
+    public boolean isMyAnswer() {
+        return myAnswer;
+    }
+
+    public void setMyAnswer(boolean myAnswer) {
+        this.myAnswer = myAnswer;
     }
 
     public boolean isDeleted() {

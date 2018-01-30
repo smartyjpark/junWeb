@@ -20,6 +20,7 @@
                 </div>
                 <div class="article-util">
                     <ul class="article-util-list">
+                        {{#myAnswer}}
                         <li>
                             <a class="link-modify-article" href="/qna/{{question.questionId}}/answer/{{answerId}}/update">수정</a>
                         </li>
@@ -29,6 +30,7 @@
                                 <button type="submit" class="delete-answer-button">삭제</button>
                             </form>
                         </li>
+                        {{/myAnswer}}
                     </ul>
                 </div>
             </article>

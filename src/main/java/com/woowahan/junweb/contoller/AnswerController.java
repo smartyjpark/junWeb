@@ -29,8 +29,10 @@ public class AnswerController {
 
     @PostMapping("")
     public String createAnswer(@PathVariable long questionId, String contents, HttpSession session){
-        if (session.getAttribute("sessionedUser") == null) return "redirect:/users/login";
-        User user = (User) session.getAttribute("sessionedUser");
+        Object tempUser = session.getAttribute("sessionedUser");
+        if (tempUser == null) return "redirect:/users/login";
+
+        User user = (User) tempUser;
         Question question = questionRepository.findQuestionByQuestionId(questionId);
         log.debug("login user: {}", user);
         Answer answer = new Answer(question, user, contents);
@@ -40,19 +42,26 @@ public class AnswerController {
 
     @DeleteMapping("/{answerId}/delete")
     public String deleteAnswer(@PathVariable long questionId, @PathVariable long answerId, HttpSession session){
-        if (session.getAttribute("sessionedUser") == null) return "redirect:/users/login";
-        User user = (User) session.getAttribute("sessionedUser");
-        Answer answer = answerRepository.findAnswerByAnswerId(answerId);
+        Object tempUser = session.getAttribute("sessionedUser");
+        if (tempUser == null) return "redirect:/users/login";
 
-        //todo: redirect alert 하는 방법 찾기
-        if (user.getId() != answer.getWriter().getId()) return "alert:/";
+        User user = (User) tempUser;
+        Answer answer = answerRepository.findAnswerByAnswerId(answerId);
+        if (user.getId() != answer.getWriter().getId()) throw new IllegalStateException("자신이 쓴 답변만 삭제할 수 있습니다.");
+
         answer.setDeleted(true);
         answerRepository.save(answer);
         return "redirect:/qna/{questionId}";
     }
 
     @PutMapping("/{answerId}/update")
-    public String updateAnswer(@PathVariable long questionId, @PathVariable long answerId, HttpSession session){
+    public String updateAnswer(@PathVariable long questionId, @PathVariable long answerId, HttpSession session, Answer answer){
+        Object tempUser = session.getAttribute("sessionedUser");
+        if (tempUser == null) return "redirect:/users/login";
+
+        User user = (User) tempUser;
+        if (user.getId() != answer.getWriter().getId()) throw new IllegalStateException("자신이 쓴 답변만 수정할할 수 있습니다");
+        answerRepository.save(answer);
 
         return "redirect:/qna/{questionId}";
     }
