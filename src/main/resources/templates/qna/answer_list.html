@@ -2,46 +2,54 @@
     <div class="qna-comment-slipp">
         <p class="qna-comment-count"><strong>{{size}}</strong>개의 의견</p>
         <div class="qna-comment-slipp-articles">
-            {{#each answers}}
-            <article class="article" id="{{anserId}}">
-                <div class="article-header">
-                    <div class="article-header-thumb">
-                        <img src="https://graph.facebook.com/v2.3/1324855987/picture" class="article-author-thumb" alt="">
+            <div class="qna-comment-list">
+                {{#each answers}}
+                <article class="article" id="{{answerId}}">
+                    <div class="article-header">
+                        <div class="article-header-thumb">
+                            <img src="https://graph.facebook.com/v2.3/1324855987/picture" class="article-author-thumb"
+                                 alt="">
+                        </div>
+                        <div class="article-header-text">
+                            <a href="/users/{{writer.id}}" class="article-author-name">{{writer.name}}</a>
+                            <a href="#answer-1434" class="article-header-time" title="퍼머링크">
+                                {{date}}
+                            </a>
+                        </div>
                     </div>
-                    <div class="article-header-text">
-                        <a href="/users/{{writer.id}}" class="article-author-name">{{writer.name}}</a>
-                        <a href="#answer-1434" class="article-header-time" title="퍼머링크">
-                            {{date}}
-                        </a>
+                    <div class="article-doc comment-doc">
+                        {{contents}}
                     </div>
-                </div>
-                <div class="article-doc comment-doc">
-                    {{contents}}
-                </div>
-                <div class="article-util">
-                    <ul class="article-util-list">
-                        {{#myAnswer}}
-                        <li>
-                            <a class="link-modify-article" href="/qna/{{question.questionId}}/answer/{{answerId}}/update">수정</a>
-                        </li>
-                        <li>
-                            <form class="delete-answer-form" action="/qna/{{question.questionId}}/answer/{{answerId}}/delete" method="POST">
-                                <input type="hidden" name="_method" value="DELETE">
-                                <button type="submit" class="delete-answer-button">삭제</button>
-                            </form>
-                        </li>
-                        {{/myAnswer}}
-                    </ul>
-                </div>
-            </article>
-            {{/each}}
+                    <div class="article-util">
+                        <ul class="article-util-list">
+                            {{#equals sessionedUser writer}}
+                            <li>
+                                <a class="link-modify-article"
+                                   href="/qna/{{question.questionId}}/answer/{{answerId}}/update">수정</a>
+                            </li>
+                            <li>
+                                <form class="delete-answer-form"
+                                      action="/qna/{{question.questionId}}/answer/{{answerId}}/delete" method="POST">
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <button type="submit" class="delete-answer-button" request="/qna/{{question.questionId}}/answer/{{answerId}}/delete">삭제</button>
+                                </form>
+                            </li>
+                            {{/equals}}
+                        </ul>
+                    </div>
+                </article>
+                {{/each}}
+            </div>
+            {{#sessionedUser}}
             <form class="submit-write" method="post" action="/qna/{{question.questionId}}/answer">
                 <div class="form-group" style="padding:14px;">
                     <textarea class="form-control" placeholder="Update your status" name="contents"></textarea>
                 </div>
-                <button class="btn btn-success pull-right" type="submit">답변하기</button>
-                <div class="clearfix" />
+                <input class="btn btn-success pull-right" type="submit" value="답변하기">
+                <div class="clearfix"/>
             </form>
+            {{/sessionedUser}}
+            <p></p>
         </div>
     </div>
 </div>

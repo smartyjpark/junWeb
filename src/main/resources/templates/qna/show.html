@@ -55,9 +55,41 @@
     {{/question}}
 </div>
 
+<script type="text/template" id="answerTemplate">
+    <article class="article" id="{4}">
+        <div class="article-header">
+            <div class="article-header-thumb">
+                <img src="https://graph.facebook.com/v2.3/1324855987/picture" class="article-author-thumb"
+                     alt="">
+            </div>
+            <div class="article-header-text">
+                <a href="/users/{4}" class="article-author-name">{0}</a>
+                <a href="#answer-1434" class="article-header-time" title="퍼머링크">{1}</a>
+            </div>
+        </div>
+        <div class="article-doc comment-doc">
+            {2}
+        </div>
+        <div class="article-util">
+            <ul class="article-util-list">
+                <li>
+                    <a class="link-modify-article"
+                       href="/qna/{3}/answer/{4}/update">수정</a>
+                </li>
+                <li>
+                    <form class="delete-answer-form"
+                          action="/qna/{3}/answer/{4}/delete" method="POST">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button type="submit" class="delete-answer-button" request="/qna/{3}/answer/{4}/delete">삭제</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </article>
+</script>
+
 <!-- script references -->
-<script src="../js/jquery-2.2.0.min.js"></script>
-<script src="../js/bootstrap.min.js"></script>
-<script src="../js/scripts.js"></script>
+{{> common/foot }}
+<script src="../js/answer.js"></script>
 	</body>
 </html>

@@ -17,7 +17,7 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 
 
-@Controller
+@RestController
 @RequestMapping("/qna/{questionId}/answer")
 public class AnswerController {
     private static final Logger log = LoggerFactory.getLogger(AnswerController.class);
@@ -28,30 +28,26 @@ public class AnswerController {
     private QuestionRepository questionRepository;
 
     @PostMapping("")
-    public String createAnswer(@PathVariable long questionId, String contents, HttpSession session){
+    public Answer createAnswer(@PathVariable long questionId, String contents, HttpSession session){
         Object tempUser = session.getAttribute("sessionedUser");
-        if (tempUser == null) return "redirect:/users/login";
-
+        if (tempUser == null) return null;
         User user = (User) tempUser;
         Question question = questionRepository.findQuestionByQuestionId(questionId);
         log.debug("login user: {}", user);
         Answer answer = new Answer(question, user, contents);
-        answerRepository.save(answer);
-        return "redirect:/qna/{questionId}";
+        return answerRepository.save(answer);
     }
 
     @DeleteMapping("/{answerId}/delete")
-    public String deleteAnswer(@PathVariable long questionId, @PathVariable long answerId, HttpSession session){
+    public Answer deleteAnswer(@PathVariable long questionId, @PathVariable long answerId, HttpSession session){
         Object tempUser = session.getAttribute("sessionedUser");
-        if (tempUser == null) return "redirect:/users/login";
+        if (tempUser == null) throw new IllegalStateException("먼저 로그인하세요!");
 
         User user = (User) tempUser;
         Answer answer = answerRepository.findAnswerByAnswerId(answerId);
         if (user.getId() != answer.getWriter().getId()) throw new IllegalStateException("자신이 쓴 답변만 삭제할 수 있습니다.");
-
         answer.setDeleted(true);
-        answerRepository.save(answer);
-        return "redirect:/qna/{questionId}";
+        return answerRepository.save(answer);
     }
 
     @PutMapping("/{answerId}/update")

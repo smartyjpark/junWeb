@@ -34,14 +34,6 @@ public class QuestionController {
         Object tempUser = session.getAttribute("sessionedUser");
         List<Answer> answers = question.getAnswers();
 
-        if(tempUser != null){
-            User user = (User)tempUser;
-            model.addAttribute("isMyQuestion", question.getWriter().getId() == user.getId());
-            answers.forEach(answer->{
-                if(answer.getWriter().getId() == user.getId()) answer.setMyAnswer(true);
-            });
-        }
-
         model.addAttribute("question", question);
         model.addAttribute("answers", answers);
         model.addAttribute("size", answers.size());

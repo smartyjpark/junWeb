@@ -1,5 +1,7 @@
 package com.woowahan.junweb.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.Where;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -15,21 +17,28 @@ import java.util.List;
 public class Question {
     @Id
     @GeneratedValue
+    @JsonProperty
     private long questionId;
 
     @ManyToOne
     @JoinColumn(foreignKey = @ForeignKey(name = "fk_question_writer"))
+    @JsonProperty
     private User writer;
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
     @Where(clause = "deleted = false")
     @OrderBy("answerId ASC")
+    @JsonIgnore
     private List<Answer> answers = new ArrayList<>();
 
+    @JsonProperty
     private String title;
+    @JsonProperty
     private String contents;
     @CreatedDate
+    @JsonProperty
     private Date date;
+    @JsonProperty
     private boolean deleted;
 
 

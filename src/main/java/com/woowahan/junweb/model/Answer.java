@@ -1,5 +1,6 @@
 package com.woowahan.junweb.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -11,20 +12,25 @@ import java.util.Date;
 public class Answer {
     @Id
     @GeneratedValue
+    @JsonProperty
     private long answerId;
 
     @ManyToOne
+    @JsonProperty
     private User writer;
 
     @ManyToOne
     @JoinColumn(foreignKey = @ForeignKey(name = "fk_answer_question"))
+    @JsonProperty
     private Question question;
+    @JsonProperty
     private String contents;
 
     @CreatedDate
+    @JsonProperty
     private Date date;
+    @JsonProperty
     private boolean deleted;
-    private boolean myAnswer;
 
     public Answer() {
 
@@ -35,16 +41,7 @@ public class Answer {
         this.writer = writer;
         this.contents = contents;
         this.deleted = false;
-        this.myAnswer = false;
 
-    }
-
-    public boolean isMyAnswer() {
-        return myAnswer;
-    }
-
-    public void setMyAnswer(boolean myAnswer) {
-        this.myAnswer = myAnswer;
     }
 
     public boolean isDeleted() {

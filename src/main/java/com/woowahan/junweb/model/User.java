@@ -1,20 +1,29 @@
 package com.woowahan.junweb.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.util.Objects;
 
 @Entity
 public class User {
     @Id
     @GeneratedValue
+    @JsonProperty
     private long id;
 
     @Column(nullable = false, length = 15)
+    @JsonProperty
     private String userId;
+    @JsonIgnore
     private String password;
+    @JsonProperty
     private String name;
+    @JsonProperty
     private String email;
 
     public User(){
@@ -66,6 +75,24 @@ public class User {
 
     public String getEmail() {
         return email;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id == user.id &&
+                Objects.equals(userId, user.userId) &&
+                Objects.equals(password, user.password) &&
+                Objects.equals(name, user.name) &&
+                Objects.equals(email, user.email);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id, userId, password, name, email);
     }
 
     @Override
