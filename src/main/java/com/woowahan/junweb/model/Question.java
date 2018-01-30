@@ -1,20 +1,37 @@
-package com.woowahan.junweb.Model;
+package com.woowahan.junweb.model;
+
+import org.hibernate.annotations.Where;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 public class Question {
     @Id
     @GeneratedValue
     private long questionId;
 
     @ManyToOne
+    @JoinColumn(foreignKey = @ForeignKey(name = "fk_question_writer"))
     private User writer;
+
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
+    @Where(clause = "deleted = false")
+    @OrderBy("answerId ASC")
+    private List<Answer> answers = new ArrayList<>();
+
     private String title;
     private String contents;
-    private String date;
+    @CreatedDate
+    private Date date;
+    private boolean deleted;
+
 
     public Question() {
 
@@ -24,8 +41,24 @@ public class Question {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
-        this.date = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
+        this.deleted = false;
 
+    }
+
+    public List<Answer> getAnswers() {
+        return answers;
+    }
+
+    public void setAnswers(List<Answer> answers) {
+        this.answers = answers;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 
     public long getQuestionId() {
@@ -60,11 +93,11 @@ public class Question {
         this.contents = contents;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
