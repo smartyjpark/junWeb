@@ -49,8 +49,7 @@ function deleteAnswer(e){
         error : function (xhr, status) {
         },
         success : function (data, status) {
-            if (status) {
-                console.log("init!");
+            if (status==="success") {
                 deleteBtn.closest("article").remove();
                 } else {
                 alert(data.errorMessage);
